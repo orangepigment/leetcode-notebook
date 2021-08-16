@@ -1,16 +1,13 @@
 package ru.orangepigment.trees
 
+import ru.orangepigment.data.Node
+
 import scala.collection.mutable
 
 /**
  * [[https://leetcode.com/problems/n-ary-tree-preorder-traversal/]]
  */
 object NaryTreePreorderTraversal {
-
-  class Node(var _value: Int) {
-    var value: Int = _value
-    var children: List[Node] = List()
-  }
 
   // root -> left -> right
   def preorder(root: Node): List[Int] = {
