@@ -7,6 +7,7 @@ import ru.orangepigment.data.TreeNode
  */
 object InorderTraversal {
 
+  // ToDo: add iterative solution
   // left -> root -> right
   def inorderTraversal(root: TreeNode): List[Int] = {
     inorderTraversalRecursive(root)
