@@ -4,6 +4,9 @@ import ru.orangepigment.data.TreeNode
 
 import scala.collection.mutable
 
+/**
+ * [[https://leetcode.com/problems/binary-tree-postorder-traversal/]]
+ */
 object PostorderTraversal {
 
   // left -> right -> root
