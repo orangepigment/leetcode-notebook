@@ -10,35 +10,20 @@ package ru.orangepigment.data
 class RLEIterator(_encoding: Array[Int]) {
 
   private var pointer = 0
-  private val dataLength = _encoding.length
-  private var lastExhaustedElem = -1
-  private var exhaustedElems = 0
 
   def next(n: Int): Int = {
-    if (pointer == dataLength) {
-      -1
-    } else {
-      exhaustedElems = 0
-
-      while (exhaustedElems != n) {
-        if (pointer == dataLength) {
-          return -1
-        }
-
-        while (_encoding(pointer) - exhaustedElems != 0) {
-          if (exhaustedElems == n) {
-            return lastExhaustedElem
-          }
-
-          lastExhaustedElem = _encoding(pointer + 1)
-          exhaustedElems += 1
-        }
-
-        pointer += 2
+    var counter = n
+    while (pointer < _encoding.length) {
+      if (counter <= _encoding(pointer)) {
+        _encoding(pointer) -= counter
+        return _encoding(pointer + 1)
       }
 
-      lastExhaustedElem
+      counter -= _encoding(pointer)
+      pointer += 2
     }
+
+    -1
   }
 
 }
