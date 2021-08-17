@@ -25,4 +25,15 @@ object MaxProfit {
     Math.max(maxProfit, sellPrice - buyPrice)
   }
 
+  /*
+      val minprice = Int.MAX_VALUE
+      int maxprofit = 0
+      val (i <- prices.indices) {
+        if (prices(i) < minprice)
+          minprice = prices(i)
+        else if (prices(i) - minprice > maxprofit)
+          maxprofit = prices(i) - minprice
+      }
+   */
+
 }
