@@ -55,7 +55,7 @@ object MatchRegex {
       var currentStates = Set(NDFA.INITIAL_STATE)
 
       for (letter <- text) {
-        //  We can make the following steps: lambda, char + lambda, lambda + char
+        //  We can make the following steps: lambda, lambda + char
         val reachableViaLetter = currentStates.flatMap { state =>
           transitions.get(state -> Some(letter)) ++
             transitions.get(state -> NDFA.ANY_CHAR)
@@ -68,11 +68,7 @@ object MatchRegex {
             transitions.get(state -> NDFA.ANY_CHAR)
         }
 
-        val reachableViaLambdaAndLetterAndLambda =
-          reachableViaLambdaAndLetter ++ transitViaLambda(reachableViaLambdaAndLetter)
-
-        currentStates =
-          reachableViaLetter ++ reachableViaLambdaAndLetterAndLambda
+        currentStates = reachableViaLetter ++ reachableViaLambdaAndLetter
 
         if (currentStates.isEmpty) {
           return false
