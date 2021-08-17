@@ -1,7 +1,5 @@
 package ru.orangepigment.strings
 
-import ru.orangepigment.strings.MatchRegex.NDFA.State
-
 import scala.collection.mutable
 
 /**
@@ -54,33 +52,24 @@ object MatchRegex {
                     ) {
 
     def matches(text: String): Boolean = {
-      println(s"Accepting state is $acceptingState")
       var currentStates = Set(NDFA.INITIAL_STATE)
-      println(s"Current states: ${currentStates.mkString(" ")}")
 
       for (letter <- text) {
-        println(s"Current ch is $letter")
         //  We can make the following steps: lambda, char + lambda, lambda + char
         val reachableViaLetter = currentStates.flatMap { state =>
           transitions.get(state -> Some(letter)) ++
             transitions.get(state -> NDFA.ANY_CHAR)
         }
-        println(s"States reachable via letter: ${reachableViaLetter.mkString(" ")}")
 
         val reachableViaLambda = transitViaLambda(currentStates)
-        println(s"States reachable via lambda: ${reachableViaLambda.mkString(" ")}")
 
         val reachableViaLambdaAndLetter = reachableViaLambda.flatMap { state =>
           transitions.get(state -> Some(letter)) ++
             transitions.get(state -> NDFA.ANY_CHAR)
         }
 
-        println(s"States reachable via lambda and letter: ${reachableViaLambdaAndLetter.mkString(" ")}")
-
         val reachableViaLambdaAndLetterAndLambda =
           reachableViaLambdaAndLetter ++ transitViaLambda(reachableViaLambdaAndLetter)
-
-        println(s"States reachable via lambda and letter and lambda: ${reachableViaLambdaAndLetterAndLambda.mkString(" ")}")
 
         currentStates =
           reachableViaLetter ++ reachableViaLambdaAndLetterAndLambda
@@ -88,20 +77,17 @@ object MatchRegex {
         if (currentStates.isEmpty) {
           return false
         }
-
-        println(s"Current states: ${currentStates.mkString(" ")}\n")
       }
 
       // If the text is finished we still can make lambda transitions
-      currentStates = transitViaLambda(currentStates)
-      println(s"Current states: ${currentStates.mkString(" ")}\n")
+      currentStates = currentStates ++ transitViaLambda(currentStates)
 
       currentStates.contains(acceptingState)
     }
 
     private def transitViaLambda(currentStates: Set[NDFA.State]): Set[NDFA.State] = {
       var reachableViaLambda = currentStates.flatMap(s => transitions.get(s -> None))
-      var nextReachableViaLambda = Set.empty[State]
+      var nextReachableViaLambda = Set.empty[NDFA.State]
       while (reachableViaLambda.diff(nextReachableViaLambda).nonEmpty) {
         nextReachableViaLambda = reachableViaLambda
         reachableViaLambda ++= reachableViaLambda.flatMap(s => transitions.get(s -> None))
@@ -116,8 +102,5 @@ object MatchRegex {
     ndfa.matches(s)
   }
 
-  def main(args: Array[String]): Unit = {
-    println(isMatch("aa", "a*").toString)
-  }
-
 }
+
