@@ -1,14 +1,23 @@
 package ru.orangepigment.arrays
 
+import scala.collection.mutable
+
 /**
  * [[https://leetcode.com/problems/two-sum]]
  */
 object TwoSum {
+
   def twoSum(nums: Array[Int], target: Int): Array[Int] = {
-    var result = Array[Int]()
-    for (i <- nums.indices; j <- i + 1 until nums.length) {
-      if (nums(i) + nums(j) == target) result = Array(i, j)
+    val numberXIndexOfComplementary = mutable.Map.empty[Int,Int]
+
+    for (i <- nums.indices) {
+      numberXIndexOfComplementary.get(nums(i)) match {
+        case Some(idxOfComplementary) =>
+          return Array(i, idxOfComplementary)
+        case None =>
+          numberXIndexOfComplementary += (target - nums(i)) -> i
+      }
     }
-    result
+    Array.empty[Int]
   }
 }
