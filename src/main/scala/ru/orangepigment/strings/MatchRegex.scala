@@ -16,7 +16,7 @@ object MatchRegex {
 
     def apply(pattern: String): NDFA = {
       var acceptingState: State = -1
-      val transitions = mutable.LinkedHashMap.empty[(State, Option[Char]), State]
+      val transitions = mutable.Map.empty[(State, Option[Char]), State]
 
       var pi = 0
       var currentState = INITIAL_STATE

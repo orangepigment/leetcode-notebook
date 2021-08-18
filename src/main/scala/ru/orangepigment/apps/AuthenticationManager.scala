@@ -13,7 +13,7 @@ import scala.collection.mutable
  */
 class AuthenticationManager(_timeToLive: Int) {
 
-  private val tokensXTtl = mutable.HashMap.empty[String, Int]
+  private val tokensXTtl = mutable.Map.empty[String, Int]
 
   def generate(tokenId: String, currentTime: Int): Unit = {
     tokensXTtl += tokenId -> currentTime

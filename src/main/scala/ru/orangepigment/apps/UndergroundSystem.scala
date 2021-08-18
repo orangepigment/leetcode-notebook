@@ -14,8 +14,8 @@ import scala.collection.mutable
 
 class UndergroundSystem() {
 
-  private val timeToTravel = mutable.HashMap.empty[(String, String), List[Int]]
-  private val passengers = mutable.HashMap.empty[Int, (String, Int)]
+  private val timeToTravel = mutable.Map.empty[(String, String), List[Int]]
+  private val passengers = mutable.Map.empty[Int, (String, Int)]
 
   def checkIn(id: Int, stationName: String, t: Int): Unit = {
     passengers += id -> (stationName, t)

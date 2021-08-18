@@ -17,7 +17,7 @@ class Twitter() {
 
   /** Initialize your data structure here. */
   private val tweets = ListBuffer.empty[(Int, Int)] // user x tweet
-  private val followersToFollowees = mutable.HashMap.empty[Int, Set[Int]]
+  private val followersToFollowees = mutable.Map.empty[Int, Set[Int]]
 
   /** Compose a new tweet. */
   def postTweet(userId: Int, tweetId: Int): Unit = {
