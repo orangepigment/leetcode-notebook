@@ -13,30 +13,16 @@ object MergeSortedArray {
     } else if (n == 0) {
       ()
     } else {
-      var i = 0
-      var j = 0
-      while (i < m + n && j < n) {
-        if (nums1(i) <= nums2(j)) {
-          i += 1
+      var i = m - 1
+      var j = n - 1
+
+      for (k <- nums1.length - 1 to 0 by -1 if j >= 0) {
+        if (i >= 0 && nums1(i) > nums2(j)) {
+          nums1(k) = nums1(i)
+          i -= 1
         } else {
-          var toShift = nums1(i)
-
-          // Shift all elements to the right by 1 position
-          for (k <- i + 1 until m + n) {
-            val buf = nums1(k)
-            nums1(k) = toShift
-            toShift = buf
-          }
-
-          nums1(i) = nums2(j)
-          j += 1
-        }
-      }
-
-      // Fill remaining zeroes if necessary
-      if (i == m + n) {
-        for (kk <- j until n) {
-          nums1(m + kk) = nums2(kk)
+          nums1(k) = nums2(j)
+          j -= 1
         }
       }
     }
