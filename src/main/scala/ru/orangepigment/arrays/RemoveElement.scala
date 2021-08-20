@@ -6,25 +6,17 @@ package ru.orangepigment.arrays
 object RemoveElement {
 
   def removeElement(nums: Array[Int], `val`: Int): Int = {
-    var acc = 0
-    for (i <- nums.indices) {
+    var n = nums.length
+    var i = 0
+    while (i < n) {
       if (nums(i) == `val`) {
-        var j = i + 1
-        while (j < nums.length) {
-          if (nums(i) != nums(j)) {
-            nums(i) = nums(j)
-            nums(j) = `val`
-            j = nums.length
-            acc += 1
-          } else {
-            j += 1
-          }
-        }
+        nums(i) = nums(n - 1)
+        n -= 1
       } else {
-        acc += 1
+        i += 1
       }
     }
-    acc
+    n
   }
 
 }
