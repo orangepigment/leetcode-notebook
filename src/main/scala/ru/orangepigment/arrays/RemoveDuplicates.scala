@@ -8,7 +8,18 @@ import scala.annotation.tailrec
 object RemoveDuplicates {
 
   def removeDuplicates(nums: Array[Int]): Int = {
-    if (nums.isEmpty) 0 else removeDuplicatesRecursive(nums)
+    if (nums.isEmpty) {
+      0
+    } else {
+      var n = 0
+      for (i <- 1 until nums.length) {
+        if (nums(i) != nums(n)) {
+          n += 1
+          nums(n) = nums(i)
+        }
+      }
+      n + 1
+    }
   }
 
   @tailrec
