@@ -18,24 +18,19 @@ object SearchInsertPosition {
                        nums: Array[Int],
                        target: Int
                      ): Int = {
-    if (rightIndex - leftIndex <= 1) {
-      if (target < nums(leftIndex)) {
-        leftIndex
-      } else if (target > nums(rightIndex)) {
-        rightIndex + 1
-      } else {
-        rightIndex
-      }
-    } else {
+    if (leftIndex < rightIndex) {
       val middleIndex = (leftIndex + rightIndex) / 2
-      val elem = nums(middleIndex)
-      if (elem == target) {
+      if (nums(middleIndex) == target) {
         middleIndex
-      } else if (elem > target) {
-        searchRecursive(leftIndex, middleIndex, nums, target)
+      } else if (target < nums(middleIndex)) {
+        searchRecursive(leftIndex, middleIndex - 1, nums, target)
       } else {
-        searchRecursive(middleIndex, rightIndex, nums, target)
+        searchRecursive(middleIndex + 1, rightIndex, nums, target)
       }
+    } else if (nums(leftIndex) >= target) {
+      leftIndex
+    } else {
+      leftIndex + 1
     }
   }
 
