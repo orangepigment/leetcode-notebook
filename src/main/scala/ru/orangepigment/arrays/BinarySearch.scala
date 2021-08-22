@@ -2,6 +2,9 @@ package ru.orangepigment.arrays
 
 import scala.annotation.tailrec
 
+/**
+ * [[https://leetcode.com/problems/binary-search]]
+ */
 object BinarySearch {
 
   def search(nums: Array[Int], target: Int): Int = {
