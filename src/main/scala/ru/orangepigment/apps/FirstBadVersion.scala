@@ -8,19 +8,23 @@ import scala.annotation.tailrec
 object FirstBadVersion {
 
   def firstBadVersion(n: Int): Int = {
-    impl(n / 2, n)
+    impl(1, n)
   }
 
-  def isBadVersion(version: Int): Boolean = version >= 4
+  def isBadVersion(version: Int): Boolean = version >= 1
 
   @tailrec
-  private def impl(versionToCheck: Int, minBadVersion: Int): Int = {
-    if (minBadVersion - versionToCheck == 1) {
-      if (isBadVersion(versionToCheck)) versionToCheck else minBadVersion
-    } else if (isBadVersion(versionToCheck)) {
-      impl(versionToCheck / 2, versionToCheck)
+  private def impl(minBadVersion: Int, maxBadVersion: Int): Int = {
+    if (minBadVersion < maxBadVersion) {
+      val middleBadVersion = evalMiddle(minBadVersion, maxBadVersion)
+
+      if (isBadVersion(middleBadVersion)) {
+        impl(minBadVersion, middleBadVersion)
+      } else {
+        impl(middleBadVersion + 1, maxBadVersion)
+      }
     } else {
-      impl(evalMiddle(versionToCheck, minBadVersion), minBadVersion)
+      maxBadVersion
     }
   }
 
