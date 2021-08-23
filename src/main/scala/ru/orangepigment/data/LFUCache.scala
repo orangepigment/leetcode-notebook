@@ -3,44 +3,82 @@ package ru.orangepigment.data
 import scala.collection.mutable
 
 /**
+ * [[https://leetcode.com/problems/lfu-cache/]]
+ *
  * Your ru.orangepigment.data.LFUCache object will be instantiated and called as such:
  * var obj = new ru.orangepigment.data.LFUCache(capacity)
  * var param_1 = obj.get(key)
  * obj.put(key,value)
  */
 
-// ToDo: store key usage timestamp
 class LFUCache(_capacity: Int) {
 
-  private val cache = mutable.Map.empty[Int, Int]
-  private val counter = mutable.Map.empty[Int, Int]
-  private var leastUsedKey: Option[Int] = None
+  private class Node(
+                      val key: Int,
+                      val value: Int,
+                      var frequency: Int,
+                      var next: Option[Node] = None,
+                      var prev: Option[Node] = None,
+                    )
+
+  private var head: Option[Node] = None
+  private var tail: Option[Node] = None
+  private val cache = mutable.Map.empty[Int, Node]
 
   def get(key: Int): Int = {
-    val v = cache.getOrElse(key, -1)
-    if (v != -1) {
-      counter.put(key, counter(key) + 1)
+    cache.get(key) match {
+      case Some(node) =>
+        node.frequency += 1
+        removeNode(node)
+        // ToDo: Insert the node back to list
+        node.value
+
+      case None => -1
     }
-    v
   }
 
   def put(key: Int, value: Int): Unit = {
-    if (cache.size == _capacity && !cache.keySet.contains(key)) {
-      leastUsedKey.foreach { k =>
-        counter.remove(k)
-        cache.remove(k)
-      }
-      // ToDo: find new least used key? It is the new key by definition? No, it can be another old putten key
+    cache.get(key) match {
+      case Some(node) =>
+        node.frequency += 1
+        removeNode(node)
+        // ToDo: Insert the node back to list
+
+      case None =>
+        if (cache.size == _capacity) {
+          cache.remove(head.get.key)
+          removeNode(head.get)
+        }
+        val node = new Node(key, value, 1)
+        // ToDo: Add new node
+        cache.put(key, node)
     }
-    internalPut(key, value)
+
+    if (cache.size == _capacity && !cache.keySet.contains(key)) {
+      cache.remove(head.get.key)
+    }
+
   }
 
-  private def internalPut(key: Int, value: Int): Unit = {
-    cache.put(key, value)
-    counter.put(key, counter.getOrElse(key, 0) + 1)
+  private def addNode(node: Node): Unit = {
+    if (head.isEmpty) {
+      head = Some(node)
+      tail = Some(node)
+    } else {
+      // ToDo: implement
+      ???
+    }
+  }
 
-    if (leastUsedKey.map(counter.apply).getOrElse(Int.MaxValue) > counter(key)) {
-      leastUsedKey = Some(key)
+  private def removeNode(node: Node): Unit = {
+    node.prev match {
+      case Some(prevNode) => prevNode.next = node.next
+      case None => head = node.next
+    }
+
+    node.next match {
+      case Some(nextNode) => nextNode.prev = node.prev
+      case None => tail = node.prev
     }
   }
 
