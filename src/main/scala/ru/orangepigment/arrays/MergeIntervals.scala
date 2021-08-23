@@ -8,14 +8,14 @@ import scala.annotation.tailrec
 object MergeIntervals {
 
   def merge(intervals: Array[Array[Int]]): Array[Array[Int]] = {
-    mergeRecursive(intervals)
+    mergeRecursive(intervals.sortBy(_(0)))
   }
 
   @tailrec
   def mergeRecursive(
                       intervals: Array[Array[Int]],
                       i: Int = 0,
-                      acc: List[Array[Int]] = List.empty[Array[Int]] // Use queue instead?
+                      acc: List[Array[Int]] = List.empty[Array[Int]]
                     ): Array[Array[Int]] = {
 
     if (i >= intervals.length) {
@@ -26,7 +26,7 @@ object MergeIntervals {
         i + 1,
         intervals(i) +: acc
       )
-    } else if (acc.head(1) >= intervals(i)(0)) { // FixME: intervals can be not sorted: [[1,4],[0,0]]
+    } else if (acc.head(1) >= intervals(i)(0)) {
       mergeRecursive(
         intervals,
         i + 1,
